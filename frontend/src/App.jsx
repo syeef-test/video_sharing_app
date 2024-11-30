@@ -13,6 +13,7 @@ import AdminHome from "./pages/AdminHome";
 import Video from "./pages/Video";
 import User from "./pages/User";
 import Category from "./pages/Category";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route path="/user">
             <User />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </Router>
