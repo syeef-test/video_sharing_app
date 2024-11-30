@@ -1,0 +1,71 @@
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import Admin from "../models/adminModel.js";
+
+export const adminRegister = async (req, res, next) => {
+  try {
+    if (!req.body.email || !req.body.password) {
+      res.status(400).send({ message: "Send All Required Fields" });
+    }
+
+    const data = Admin.find({ email: req.body.email });
+    if (data) {
+      const saltrounds = 10;
+      const hash = await bcrypt.hash(req.body.password, saltrounds);
+
+      const newAdmin = {
+        email: req.body.email,
+        password: hash,
+      };
+
+      const registerResponse = await Admin.create(newAdmin);
+
+      if (!registerResponse) {
+        return res.status(500).send({ message: "Failed To Create Admin" });
+      }
+
+      return res.status(200).send(registerResponse);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error.message });
+  }
+};
+
+const generateAccessToken = (id, email) => {
+  return jwt.sign({ adminId: id, email: email }, process.env.TOKEN_SECRET);
+};
+
+export const adminLogin = async (req, res, next) => {
+  try {
+    if (!req.body.email || !req.body.password) {
+      res.status(400).send({ message: "Send all required fields" });
+    }
+
+    const response = await Admin.findOne({ email: req.body.email });
+
+    if (!response) {
+      return res
+        .status(500)
+        .sned({ message: "No Admin Details Found By This EmailID" });
+    }
+
+    if (response) {
+      const match = bcrypt.compareSync(req.body.password, response.password);
+    }
+
+    if (match) {
+      return res.status(200).send({
+        message: "Admin Login Succesful",
+        token: generateAccessToken(response._id, response.email),
+        email: response.email,
+        adminId: response._id,
+      });
+    } else {
+      return res.status(500).send({ message: "Password Is Wrong" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error.message });
+  }
+};

@@ -4,6 +4,9 @@ dotenv.config();
 import cors from "cors";
 import mongoose from "mongoose";
 
+//Import Routes
+import adminRoutes from "./routes/adminRoute.js";
+
 const app = express();
 app.use(express.json());
 
@@ -11,6 +14,8 @@ app.use(cors());
 
 const PORT = 3000 || process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
+
+app.use("/api/auth", adminRoutes);
 
 async function startServer() {
   try {
