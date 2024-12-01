@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 //Import Routes
 import adminRoutes from "./routes/adminRoute.js";
+import categoryRoutes from "./routes/categoryRoute.js";
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ const PORT = 3000 || process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use("/api/auth", adminRoutes);
+app.use("/api/category", categoryRoutes);
 
 async function startServer() {
   try {

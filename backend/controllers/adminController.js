@@ -9,7 +9,7 @@ export const adminRegister = async (req, res, next) => {
     }
 
     const data = Admin.find({ email: req.body.email });
-    if (data) {
+    if (data.length === 0) {
       const saltrounds = 10;
       const hash = await bcrypt.hash(req.body.password, saltrounds);
 
@@ -25,6 +25,10 @@ export const adminRegister = async (req, res, next) => {
       }
 
       return res.status(200).send(registerResponse);
+    } else {
+      res
+        .status(400)
+        .send({ message: "Allready Admin Exist Using Same Email ID" });
     }
   } catch (error) {
     console.log(error);
@@ -44,7 +48,7 @@ export const adminLogin = async (req, res, next) => {
 
     const response = await Admin.findOne({ email: req.body.email });
 
-    if (!response) {
+    if (response.length === 0) {
       return res
         .status(500)
         .sned({ message: "No Admin Details Found By This EmailID" });
@@ -52,17 +56,17 @@ export const adminLogin = async (req, res, next) => {
 
     if (response) {
       const match = bcrypt.compareSync(req.body.password, response.password);
-    }
 
-    if (match) {
-      return res.status(200).send({
-        message: "Admin Login Succesful",
-        token: generateAccessToken(response._id, response.email),
-        email: response.email,
-        adminId: response._id,
-      });
-    } else {
-      return res.status(500).send({ message: "Password Is Wrong" });
+      if (match) {
+        return res.status(200).send({
+          message: "Admin Login Succesful",
+          token: generateAccessToken(response._id, response.email),
+          email: response.email,
+          adminId: response._id,
+        });
+      } else {
+        return res.status(500).send({ message: "Password Is Wrong" });
+      }
     }
   } catch (error) {
     console.log(error);
