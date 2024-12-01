@@ -8,7 +8,8 @@ export const adminRegister = async (req, res, next) => {
       res.status(400).send({ message: "Send All Required Fields" });
     }
 
-    const data = Admin.find({ email: req.body.email });
+    const data = await Admin.find({ email: req.body.email });
+    //console.log(data);
     if (data.length === 0) {
       const saltrounds = 10;
       const hash = await bcrypt.hash(req.body.password, saltrounds);
@@ -47,11 +48,11 @@ export const adminLogin = async (req, res, next) => {
     }
 
     const response = await Admin.findOne({ email: req.body.email });
-
-    if (response.length === 0) {
+    //console.log("response", response);
+    if (response === null) {
       return res
         .status(500)
-        .sned({ message: "No Admin Details Found By This EmailID" });
+        .send({ message: "No Admin Details Found By This EmailID" });
     }
 
     if (response) {

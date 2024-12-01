@@ -21,10 +21,13 @@ function Register() {
       const confirm_password = confirm_passwordRef.current.value;
 
       if (password === confirm_password) {
-        const registerReponse = await axios.post(`url`, {
-          email: email,
-          password: password,
-        });
+        const registerReponse = await axios.post(
+          `http://127.0.0.1:3000/api/auth/adminRegister`,
+          {
+            email: email,
+            password: password,
+          }
+        );
 
         if (registerReponse.status === 200) {
           alert("Admin Created Succesfully");
@@ -35,7 +38,7 @@ function Register() {
     } catch (error) {
       setError("Error Occured");
       console.log(error);
-      alert("Error Occured");
+      alert(error.response.data.message);
     } finally {
       setLoading(false);
       emailRef.current.value = "";
