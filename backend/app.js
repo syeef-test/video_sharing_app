@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import adminRoute from "./routes/adminRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import videoRoute from "./routes/videoRoute.js";
+import userRoute from "./routes/userRoute.js";
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 app.use("/api/auth", adminRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/video", videoRoute);
+app.use("/api/user", userRoute);
 
 async function startServer() {
   try {
