@@ -14,11 +14,13 @@ import Video from "./pages/Video";
 import User from "./pages/User";
 import Category from "./pages/Category";
 import NotFound from "./pages/NotFound";
+import Navigation from "./components/Navigation";
 
 function App() {
   return (
     <>
       <Router>
+        <Navigation />
         <Switch>
           <Route path="/login">
             <Login />
