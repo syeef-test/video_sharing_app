@@ -24,6 +24,9 @@ function Navigation() {
           <Nav className="me-auto">
             {!isAuth && <NavLink to="/login">Admin Login</NavLink>}
             {!isAuth && <NavLink to="/register">Admin Register</NavLink>}
+            {isAuth && <NavLink to="/category">Category</NavLink>}
+            {isAuth && <NavLink to="/video">Video</NavLink>}
+            {isAuth && <NavLink to="/user">User</NavLink>}
             {isAuth && (
               <Button
                 variant="danger"

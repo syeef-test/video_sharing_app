@@ -4,6 +4,7 @@ import Admin from "../models/adminModel.js";
 const authenticate = async (req, res, next) => {
   try {
     const jwt_token = req.header("authorization");
+    //console.log(req.header("authorization"));
     const admin = jwt.verify(jwt_token, process.env.TOKEN_SECRET);
 
     const adminDetails = await Admin.findById(admin.adminId);
