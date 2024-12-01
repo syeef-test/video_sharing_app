@@ -99,5 +99,8 @@ export const deleteCategory = async (req, res, next) => {
       message: "Category Deleted Succesfully",
       data: deleteCategory,
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: error.message });
+  }
 };
