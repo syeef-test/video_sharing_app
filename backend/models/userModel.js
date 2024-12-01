@@ -10,10 +10,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    sharedVideoIds: {
-      type: [String],
-      default: [],
-    },
     status: {
       type: Boolean,
       default: true,

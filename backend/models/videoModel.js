@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 
 const videoSchema = mongoose.Schema(
   {
-    category: {
-      type: [String],
-      default: [],
-    },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     title: {
       type: String,
       required: true,
