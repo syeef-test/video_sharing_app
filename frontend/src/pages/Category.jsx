@@ -29,7 +29,7 @@ function Category() {
         <h3>Category</h3>
         <br />
         <ul style={{ padding: "0", margin: "20px auto", width: "80%" }}>
-          {category &&
+          {category.length > 0 ? (
             category.map((item) => (
               <li
                 style={{
@@ -42,7 +42,10 @@ function Category() {
               >
                 {item.categoryName}
               </li>
-            ))}
+            ))
+          ) : (
+            <li>No Category Data Found</li>
+          )}
         </ul>
       </div>
     </>
