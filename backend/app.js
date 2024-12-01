@@ -5,8 +5,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 
 //Import Routes
-import adminRoutes from "./routes/adminRoute.js";
-import categoryRoutes from "./routes/categoryRoute.js";
+import adminRoute from "./routes/adminRoute.js";
+import categoryRoute from "./routes/categoryRoute.js";
+import videoRoute from "./routes/videoRoute.js";
 
 const app = express();
 app.use(express.json());
@@ -16,8 +17,9 @@ app.use(cors());
 const PORT = 3000 || process.env.PORT;
 const MONGODB_URI = process.env.MONGODB_URI;
 
-app.use("/api/auth", adminRoutes);
-app.use("/api/category", categoryRoutes);
+app.use("/api/auth", adminRoute);
+app.use("/api/category", categoryRoute);
+app.use("/api/video", videoRoute);
 
 async function startServer() {
   try {

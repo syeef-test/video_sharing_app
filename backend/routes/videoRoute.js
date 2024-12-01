@@ -4,7 +4,7 @@ import {
   getVideo,
   updateVideo,
   deleteVideo,
-} from "../controllers/videoController";
+} from "../controllers/videoController.js";
 
 const router = express.Router();
 
