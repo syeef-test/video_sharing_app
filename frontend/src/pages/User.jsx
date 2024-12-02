@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 function User() {
   const [user, setUser] = useState([]);
@@ -24,6 +26,24 @@ function User() {
     getUserDetails();
   }, []);
 
+  const deleteHandler = async (userId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const deleteUserResponse = await axios.delete(
+        `http://127.0.0.1:3000/api/user/deleteUser/${userId}`,
+        { headers: { authorization: token } }
+      );
+
+      if (deleteUserResponse.status === 200) {
+        alert("User Deleted Succesfully");
+        getUserDetails();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div style={{ textAlign: "center", padding: "20px" }}>
@@ -42,6 +62,12 @@ function User() {
                 key={item._id}
               >
                 {item.email}
+                <Button
+                  variant="danger"
+                  onClick={() => deleteHandler(item._id)}
+                >
+                  Delete
+                </Button>
               </li>
             ))
           ) : (

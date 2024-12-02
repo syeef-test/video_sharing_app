@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
 
 function Video() {
   const [video, setVideo] = useState([]);
@@ -23,6 +25,25 @@ function Video() {
   useEffect(() => {
     getVideoDetails();
   }, []);
+
+  const deleteHandler = async (videoId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const deleteVideoResponse = await axios.delete(
+        `http://127.0.0.1:3000/api/video/deleteVideo/${videoId}`,
+        { headers: { authorization: token } }
+      );
+
+      if (deleteVideoResponse.status === 200) {
+        alert("Video Deleted Succesfully");
+        getVideoDetails();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div style={{ textAlign: "center", padding: "20px" }}>
@@ -42,6 +63,12 @@ function Video() {
               >
                 {item.title}
                 {item.description}
+                <Button
+                  variant="danger"
+                  onClick={() => deleteHandler(item._id)}
+                >
+                  Delete
+                </Button>
               </li>
             ))
           ) : (
