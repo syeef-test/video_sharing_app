@@ -5,10 +5,12 @@ import Card from "react-bootstrap/Card";
 
 function Video() {
   const [video, setVideo] = useState([]);
+  const [category, setCategory] = useState([]);
 
   const videoTitleRef = useRef(null);
   const videoDescriptionRef = useRef(null);
   const videoLinkRef = useRef(null);
+  const videoCategoryRef = useRef(null);
 
   const [editVideoId, setEditVideoId] = useState(null);
 
@@ -33,6 +35,7 @@ function Video() {
 
   useEffect(() => {
     getVideoDetails();
+    getCategoryDetails();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -48,13 +51,33 @@ function Video() {
             title: videoTitleRef.current.value,
             description: videoDescriptionRef.current.value,
             videoLink: videoLinkRef.current.value,
+            categoryId: videoCategoryRef.current.value,
           },
           { headers: { authorization: token } }
         );
-        if (addCategoryResponse.status === 200) {
-          console.log(addCategoryResponse);
+        if (addVideoResponse.status === 200) {
+          console.log(addVideoResponse);
+          //setCategory(categoryDetailsResponse.data.data);
+          getVideoDetails();
+          getCategoryDetails();
+        }
+      } else {
+        const editVideoResponse = await axios.put(
+          `http://127.0.0.1:3000/api/video/updateVideo/${editVideoId}`,
+          {
+            title: videoTitleRef.current.value,
+            description: videoDescriptionRef.current.value,
+            videoLink: videoLinkRef.current.value,
+            categoryId: videoCategoryRef.current.value,
+          },
+          { headers: { authorization: token } }
+        );
+        if (editVideoResponse.status === 200) {
+          console.log(editVideoResponse);
+          alert("Video Edited Succefully");
           //setCategory(categoryDetailsResponse.data.data);
           getCategoryDetails();
+          getVideoDetails();
         }
       }
     } catch (error) {
@@ -75,6 +98,36 @@ function Video() {
         alert("Video Deleted Succesfully");
         getVideoDetails();
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCategoryDetails = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const categoryDetailsResponse = await axios.get(
+        `http://127.0.0.1:3000/api/category/getCategory`,
+        { headers: { authorization: token } }
+      );
+      if (categoryDetailsResponse.status === 200) {
+        console.log("category:", categoryDetailsResponse);
+        setCategory(categoryDetailsResponse.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const editHandler = async (item) => {
+    try {
+      setEditVideoId(item._id);
+      //console.log("email", item.email);
+
+      videoTitleRef.current.value = item.title;
+      videoDescriptionRef.current.value = item.description;
+      videoLinkRef.current.value = item.videoLink;
+      videoCategoryRef.current.value = item.category;
     } catch (error) {
       console.log(error);
     }
@@ -111,6 +164,16 @@ function Video() {
                 <label htmlFor="videoLink">Video Link:</label>
                 <input type="text" id="videoLink" ref={videoLinkRef} required />
               </div>
+              <div>
+                <label htmlFor="videoCategory">Video Category:</label>
+                <select id="videoCategory" ref={videoCategoryRef}>
+                  {category.map((item) => (
+                    <option value={item._id} key={item._id}>
+                      {item.categoryName}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Button variant="primary" type="submit" disabled={loading}>
                 {loading ? "Adding Video..." : "Add Video"}
               </Button>
@@ -131,6 +194,11 @@ function Video() {
               >
                 {item.title}
                 {item.description}
+
+                <Button variant="success" onClick={() => editHandler(item)}>
+                  Edit
+                </Button>
+
                 <Button
                   variant="danger"
                   onClick={() => deleteHandler(item._id)}
