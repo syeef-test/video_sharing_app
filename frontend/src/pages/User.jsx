@@ -50,8 +50,11 @@ function User() {
         );
         if (addUserResponse.status === 200) {
           console.log(addUserResponse);
+          alert("User Details Added Succesfully");
           //setCategory(categoryDetailsResponse.data.data);
           getUserDetails();
+          userEmailRef.current.value = "";
+          userPasswordRef.current.value = "";
         }
       } else {
         const editUserResponse = await axios.put(
@@ -67,6 +70,8 @@ function User() {
           alert("User Details Updated Succesfully");
           //setCategory(categoryDetailsResponse.data.data);
           getUserDetails();
+          userEmailRef.current.value = "";
+          userPasswordRef.current.value = "";
         }
       }
     } catch (error) {
@@ -86,6 +91,8 @@ function User() {
       if (deleteUserResponse.status === 200) {
         alert("User Deleted Succesfully");
         getUserDetails();
+        userEmailRef.current.value = "";
+        userPasswordRef.current.value = "";
       }
     } catch (error) {
       console.log(error);
@@ -98,6 +105,7 @@ function User() {
       //console.log("email", item.email);
 
       userEmailRef.current.value = item.email;
+      userPasswordRef.current.value = "";
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +116,13 @@ function User() {
       <div style={{ textAlign: "center", padding: "20px" }}>
         <h3>User</h3>
         <br />
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Card style={{ padding: "20px", maxWidth: "400px" }}>
             <h2>Add User</h2>
             <form onSubmit={handleSubmit}>
@@ -119,7 +133,7 @@ function User() {
               <div>
                 <label htmlFor="userPassword">User Password:</label>
                 <input
-                  type="text"
+                  type="password"
                   id="userPassword"
                   ref={userPasswordRef}
                   required

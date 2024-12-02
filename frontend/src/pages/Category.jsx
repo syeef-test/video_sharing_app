@@ -46,8 +46,10 @@ function Category() {
         );
         if (addCategoryResponse.status === 200) {
           console.log(addCategoryResponse);
+          alert("Category Details Added Succesfully");
           //setCategory(categoryDetailsResponse.data.data);
           getCategoryDetails();
+          categoryNameRef.current.value = "";
         }
       } else {
         const editCategoryResponse = await axios.put(
@@ -60,6 +62,7 @@ function Category() {
           alert("Category Details Updated Succesfully");
           //setCategory(categoryDetailsResponse.data.data);
           getCategoryDetails();
+          categoryNameRef.current.value = "";
         }
       }
     } catch (error) {
@@ -79,6 +82,7 @@ function Category() {
       if (deleteCategoryResponse.status === 200) {
         alert("Category Deleted Succesfully");
         getCategoryDetails();
+        categoryNameRef.current.value = "";
       }
     } catch (error) {
       console.log(error);
@@ -100,7 +104,13 @@ function Category() {
     <>
       <div style={{ textAlign: "center", padding: "20px" }}>
         <h3>Category</h3>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Card style={{ padding: "20px", maxWidth: "400px" }}>
             <h2>Add Category</h2>
             <form onSubmit={handleSubmit}>

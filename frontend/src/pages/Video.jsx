@@ -57,6 +57,7 @@ function Video() {
         );
         if (addVideoResponse.status === 200) {
           console.log(addVideoResponse);
+          alert("Video Details Added Succesfully");
           //setCategory(categoryDetailsResponse.data.data);
           getVideoDetails();
           getCategoryDetails();
@@ -138,7 +139,13 @@ function Video() {
       <div style={{ textAlign: "center", padding: "20px" }}>
         <h3>Video</h3>
         <br />
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Card style={{ padding: "20px", maxWidth: "400px" }}>
             <h2>Add Video</h2>
             <form onSubmit={handleSubmit}>
