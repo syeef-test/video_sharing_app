@@ -54,13 +54,31 @@ function Category() {
     }
   };
 
+  const deleteHandler = async (categoryId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const deleteCategoryResponse = await axios.delete(
+        `http://127.0.0.1:3000/api/category/deleteCategory/${categoryId}`,
+        { headers: { authorization: token } }
+      );
+
+      if (deleteCategoryResponse.status === 200) {
+        alert("Category Deleted Succesfully");
+        getCategoryDetails();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div style={{ textAlign: "center", padding: "20px" }}>
         <h3>Category</h3>
         <div>
           <Card style={{ padding: "20px", maxWidth: "400px" }}>
-            <h2>Add Expense</h2>
+            <h2>Add Category</h2>
             <form onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="categoryName">Category Name:</label>
@@ -91,6 +109,12 @@ function Category() {
                 key={item._id}
               >
                 {item.categoryName}
+                <Button
+                  variant="danger"
+                  onClick={() => deleteHandler(item._id)}
+                >
+                  Delete
+                </Button>
               </li>
             ))
           ) : (
