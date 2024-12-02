@@ -21,7 +21,7 @@ function User() {
         { headers: { authorization: token } }
       );
       if (userDetailsResponse.status === 200) {
-        console.log(userDetailsResponse);
+        //console.log(userDetailsResponse);
         setUser(userDetailsResponse.data.data);
       }
     } catch (error) {
@@ -53,6 +53,21 @@ function User() {
           //setCategory(categoryDetailsResponse.data.data);
           getUserDetails();
         }
+      } else {
+        const editUserResponse = await axios.put(
+          `http://127.0.0.1:3000/api/user/updateUser/${editUserId}`,
+          {
+            email: userEmailRef.current.value,
+            password: userPasswordRef.current.value,
+          },
+          { headers: { authorization: token } }
+        );
+        if (editUserResponse.status === 200) {
+          console.log(editUserResponse);
+          alert("User Details Updated Succesfully");
+          //setCategory(categoryDetailsResponse.data.data);
+          getUserDetails();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -72,6 +87,17 @@ function User() {
         alert("User Deleted Succesfully");
         getUserDetails();
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const editHandler = async (item) => {
+    try {
+      setEdituserId(item._id);
+      //console.log("email", item.email);
+
+      userEmailRef.current.value = item.email;
     } catch (error) {
       console.log(error);
     }
@@ -118,6 +144,9 @@ function User() {
                 key={item._id}
               >
                 {item.email}
+                <Button variant="success" onClick={() => editHandler(item)}>
+                  Edit
+                </Button>
                 <Button
                   variant="danger"
                   onClick={() => deleteHandler(item._id)}
