@@ -49,6 +49,18 @@ function Category() {
           //setCategory(categoryDetailsResponse.data.data);
           getCategoryDetails();
         }
+      } else {
+        const editCategoryResponse = await axios.put(
+          `http://127.0.0.1:3000/api/category/updateCategory/${editCategoryId}`,
+          { categoryName: categoryNameRef.current.value },
+          { headers: { authorization: token } }
+        );
+        if (editCategoryResponse.status === 200) {
+          console.log(editCategoryResponse);
+          alert("Category Details Updated Succesfully");
+          //setCategory(categoryDetailsResponse.data.data);
+          getCategoryDetails();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -68,6 +80,17 @@ function Category() {
         alert("Category Deleted Succesfully");
         getCategoryDetails();
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const editHandler = async (item) => {
+    try {
+      setEditCategoryId(item._id);
+      //console.log("email", item.email);
+
+      categoryNameRef.current.value = item.categoryName;
     } catch (error) {
       console.log(error);
     }
@@ -110,6 +133,11 @@ function Category() {
                 key={item._id}
               >
                 {item.categoryName}
+
+                <Button variant="success" onClick={() => editHandler(item)}>
+                  Edit
+                </Button>
+
                 <Button
                   variant="danger"
                   onClick={() => deleteHandler(item._id)}
