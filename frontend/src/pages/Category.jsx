@@ -131,7 +131,7 @@ function Category() {
         </div>
         <br />
         <ul style={{ padding: "0", margin: "20px auto", width: "80%" }}>
-          {category.length > 0 ? (
+          {category && category.length > 0 ? (
             category.map((item) => (
               <li
                 style={{

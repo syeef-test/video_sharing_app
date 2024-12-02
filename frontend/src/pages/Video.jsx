@@ -174,11 +174,12 @@ function Video() {
               <div>
                 <label htmlFor="videoCategory">Video Category:</label>
                 <select id="videoCategory" ref={videoCategoryRef}>
-                  {category.map((item) => (
-                    <option value={item._id} key={item._id}>
-                      {item.categoryName}
-                    </option>
-                  ))}
+                  {category &&
+                    category.map((item) => (
+                      <option value={item._id} key={item._id}>
+                        {item.categoryName}
+                      </option>
+                    ))}
                 </select>
               </div>
               <Button variant="primary" type="submit" disabled={loading}>
@@ -188,7 +189,7 @@ function Video() {
           </Card>
         </div>
         <ul style={{ padding: "0", margin: "20px auto", width: "80%" }}>
-          {video.length > 0 ? (
+          {video && video.length > 0 ? (
             video.map((item) => (
               <li
                 style={{

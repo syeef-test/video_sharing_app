@@ -146,7 +146,7 @@ function User() {
           </Card>
         </div>
         <ul style={{ padding: "0", margin: "20px auto", width: "80%" }}>
-          {user.length > 0 ? (
+          {user && user.length > 0 ? (
             user.map((item) => (
               <li
                 style={{
