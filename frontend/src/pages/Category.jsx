@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 
 function Category() {
   const [category, setCategory] = useState([]);
+
   const categoryNameRef = useRef(null);
   const [editCategoryId, setEditCategoryId] = useState(null);
 

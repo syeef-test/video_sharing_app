@@ -6,6 +6,13 @@ import Card from "react-bootstrap/Card";
 function User() {
   const [user, setUser] = useState([]);
 
+  const userEmailRef = useRef(null);
+  const userPasswordRef = useRef(null);
+  const [editUserId, setEdituserId] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const getUserDetails = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -25,6 +32,32 @@ function User() {
   useEffect(() => {
     getUserDetails();
   }, []);
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+
+      const token = localStorage.getItem("token");
+
+      if (editUserId === null) {
+        const addUserResponse = await axios.post(
+          `http://127.0.0.1:3000/api/user/addUser`,
+          {
+            email: userEmailRef.current.value,
+            password: userPasswordRef.current.value,
+          },
+          { headers: { authorization: token } }
+        );
+        if (addUserResponse.status === 200) {
+          console.log(addUserResponse);
+          //setCategory(categoryDetailsResponse.data.data);
+          getUserDetails();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const deleteHandler = async (userId) => {
     try {
@@ -49,6 +82,29 @@ function User() {
       <div style={{ textAlign: "center", padding: "20px" }}>
         <h3>User</h3>
         <br />
+        <div>
+          <Card style={{ padding: "20px", maxWidth: "400px" }}>
+            <h2>Add User</h2>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="userEmail">User Email:</label>
+                <input type="text" id="userEmail" ref={userEmailRef} required />
+              </div>
+              <div>
+                <label htmlFor="userPassword">User Password:</label>
+                <input
+                  type="text"
+                  id="userPassword"
+                  ref={userPasswordRef}
+                  required
+                />
+              </div>
+              <Button variant="primary" type="submit" disabled={loading}>
+                {loading ? "Adding User..." : "Add User"}
+              </Button>
+            </form>
+          </Card>
+        </div>
         <ul style={{ padding: "0", margin: "20px auto", width: "80%" }}>
           {user.length > 0 ? (
             user.map((item) => (
