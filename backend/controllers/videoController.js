@@ -13,24 +13,31 @@ export const addVideo = async (req, res, next) => {
     }
 
     const filePath = req.file.path;
-    // console.log(filePath);
-    // const cloudServerUpload = await uploadOnCloudinary(filePath);
-    // console.log("cloud", cloudServerUpload);
+    console.log(filePath);
 
-    // const newVideo = {
-    //   title: req.body.title,
-    //   description: req.body.description,
-    //   videoLink: req.body.videoLink,
-    //   category: req.body.categoryId,
-    // };
+    const cloudServerUpload = await uploadOnCloudinary(filePath);
+    //console.log("cloud", cloudServerUpload);
+    console.log("secure_urll", cloudServerUpload.secure_url);
 
-    // const videoResponse = await Video.create(newVideo);
+    const newVideo = {
+      title: req.body.title,
+      description: req.body.description,
+      videoLink: cloudServerUpload.secure_url,
+      category: req.body.categoryId,
+    };
 
-    // if (!videoResponse) {
-    //   return res.status(500).send({ message: "Failed To Create Video" });
+    const videoResponse = await Video.create(newVideo);
+
+    //not req allready deleted file;
+    // if (cloudServerUpload) {
+    //   fs.unlinkSync(filePath);
     // }
 
-    // return res.status(200).send(videoResponse);
+    if (!videoResponse) {
+      return res.status(500).send({ message: "Failed To Create Video" });
+    }
+
+    return res.status(200).send(videoResponse);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: error.message });
@@ -57,12 +64,7 @@ export const updateVideo = async (req, res, next) => {
   try {
     const videoId = req.params.videoId;
 
-    if (
-      !req.body.title ||
-      !req.body.description ||
-      !req.body.videoLink ||
-      !req.body.categoryId
-    ) {
+    if (!req.body.title || !req.body.description || !req.body.categoryId) {
       res.status(400).send({ message: "Send All Required Fields" });
     }
 

@@ -28,6 +28,9 @@ function Navigation() {
             {isAuth && <NavLink to="/video">Video</NavLink>}
             {isAuth && <NavLink to="/user">User</NavLink>}
             {isAuth && (
+              <NavLink to="/alluploadedvideo">All Uploaded Video</NavLink>
+            )}
+            {isAuth && (
               <Button
                 variant="danger"
                 className="logout-button"

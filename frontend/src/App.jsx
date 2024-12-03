@@ -16,6 +16,7 @@ import Category from "./pages/Category";
 import NotFound from "./pages/NotFound";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
+import AllUploadedVideo from "./pages/AllUploadedVideo";
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function App() {
           </Route>
           <Route path="/user">
             <User />
+          </Route>
+          <Route path="/alluploadedvideo">
+            <AllUploadedVideo />
           </Route>
           <Route path="/">
             <Home />

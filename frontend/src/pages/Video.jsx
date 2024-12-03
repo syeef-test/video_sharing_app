@@ -3,6 +3,8 @@ import axios from "axios";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 
+import { useHistory } from "react-router-dom";
+
 function Video() {
   const [video, setVideo] = useState([]);
   const [category, setCategory] = useState([]);
@@ -17,6 +19,8 @@ function Video() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const history = useHistory();
 
   const getVideoDetails = async () => {
     try {
@@ -58,7 +62,7 @@ function Video() {
 
       let response;
       if (editVideoId === null) {
-        addVideoResponse = await axios.post(
+        const addVideoResponse = await axios.post(
           `http://127.0.0.1:3000/api/video/addVideo`,
           formData,
           { headers }
@@ -67,23 +71,25 @@ function Video() {
         if (addVideoResponse.status === 200) {
           console.log(addVideoResponse);
           alert("Video Details Added Succesfully");
-          getVideoDetails();
-          getCategoryDetails();
-        }
-      } else {
-        editVideoResponse = await axios.put(
-          `http://127.0.0.1:3000/api/video/updateVideo/${editVideoId}`,
-          formData,
-          { headers }
-        );
-
-        if (addVideoResponse.status === 200) {
-          console.log(addVideoResponse);
-          alert("Video Details Added Succesfully");
-          getVideoDetails();
-          getCategoryDetails();
+          history.push("/alluploadedvideo");
+          //getVideoDetails();
+          //getCategoryDetails();
         }
       }
+      //  } else {
+      //   const editVideoResponse = await axios.put(
+      //     `http://127.0.0.1:3000/api/video/updateVideo/${editVideoId}`,
+      //     formData,
+      //     { headers }
+      //   );
+
+      //   if (addVideoResponse.status === 200) {
+      //     console.log(addVideoResponse);
+      //     alert("Video Details Added Succesfully");
+      //     getVideoDetails();
+      //     getCategoryDetails();
+      //   }
+      // }
 
       // if (editVideoId === null) {
       //   const addVideoResponse = await axios.post(
@@ -253,9 +259,9 @@ function Video() {
                 {item.title}
                 {item.description}
 
-                <Button variant="success" onClick={() => editHandler(item)}>
+                {/* <Button variant="success" onClick={() => editHandler(item)}>
                   Edit
-                </Button>
+                </Button> */}
 
                 <Button
                   variant="danger"
