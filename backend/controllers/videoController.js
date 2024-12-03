@@ -13,9 +13,9 @@ export const addVideo = async (req, res, next) => {
     }
 
     const filePath = req.file.path;
-    console.log(filePath);
-    const cloudServerUpload = await uploadOnCloudinary(filePath);
-    console.log("cloud", cloudServerUpload);
+    // console.log(filePath);
+    // const cloudServerUpload = await uploadOnCloudinary(filePath);
+    // console.log("cloud", cloudServerUpload);
 
     // const newVideo = {
     //   title: req.body.title,
