@@ -45,82 +45,42 @@ function Video() {
 
       const token = localStorage.getItem("token");
 
-      const formData = new FormData();
-      formData.append("title", videoTitleRef.current.value);
-      formData.append("description", videoDescriptionRef.current.value);
-      formData.append("categoryId", videoCategoryRef.current.value);
-      formData.append("video", videoFileRef.current.files[0]);
-
-      const headers = {
-        authorization: token,
-        "Content-Type": "multipart/form-data",
-      };
-
-      let response;
       if (editVideoId === null) {
-        addVideoResponse = await axios.post(
+        const addVideoResponse = await axios.post(
           `http://127.0.0.1:3000/api/video/addVideo`,
-          formData,
-          { headers }
+          {
+            title: videoTitleRef.current.value,
+            description: videoDescriptionRef.current.value,
+            video: videoFileRef.current.value,
+            categoryId: videoCategoryRef.current.value,
+          },
+          { headers: { authorization: token } }
         );
-
         if (addVideoResponse.status === 200) {
           console.log(addVideoResponse);
           alert("Video Details Added Succesfully");
+          //setCategory(categoryDetailsResponse.data.data);
           getVideoDetails();
           getCategoryDetails();
         }
       } else {
-        editVideoResponse = await axios.put(
+        const editVideoResponse = await axios.put(
           `http://127.0.0.1:3000/api/video/updateVideo/${editVideoId}`,
-          formData,
-          { headers }
+          {
+            title: videoTitleRef.current.value,
+            description: videoDescriptionRef.current.value,
+            categoryId: videoCategoryRef.current.value,
+          },
+          { headers: { authorization: token } }
         );
-
-        if (addVideoResponse.status === 200) {
-          console.log(addVideoResponse);
-          alert("Video Details Added Succesfully");
-          getVideoDetails();
+        if (editVideoResponse.status === 200) {
+          console.log(editVideoResponse);
+          alert("Video Edited Succefully");
+          //setCategory(categoryDetailsResponse.data.data);
           getCategoryDetails();
+          getVideoDetails();
         }
       }
-
-      // if (editVideoId === null) {
-      //   const addVideoResponse = await axios.post(
-      //     `http://127.0.0.1:3000/api/video/addVideo`,
-      //     {
-      //       title: videoTitleRef.current.value,
-      //       description: videoDescriptionRef.current.value,
-      //       video: videoFileRef.current.value,
-      //       categoryId: videoCategoryRef.current.value,
-      //     },
-      //     { headers: { authorization: token } }
-      //   );
-      //   if (addVideoResponse.status === 200) {
-      //     console.log(addVideoResponse);
-      //     alert("Video Details Added Succesfully");
-      //     //setCategory(categoryDetailsResponse.data.data);
-      //     getVideoDetails();
-      //     getCategoryDetails();
-      //   }
-      // } else {
-      //   const editVideoResponse = await axios.put(
-      //     `http://127.0.0.1:3000/api/video/updateVideo/${editVideoId}`,
-      //     {
-      //       title: videoTitleRef.current.value,
-      //       description: videoDescriptionRef.current.value,
-      //       categoryId: videoCategoryRef.current.value,
-      //     },
-      //     { headers: { authorization: token } }
-      //   );
-      //   if (editVideoResponse.status === 200) {
-      //     console.log(editVideoResponse);
-      //     alert("Video Edited Succefully");
-      //     //setCategory(categoryDetailsResponse.data.data);
-      //     getCategoryDetails();
-      //     getVideoDetails();
-      //   }
-      // }
     } catch (error) {
       console.log(error);
     }
