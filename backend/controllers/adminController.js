@@ -44,7 +44,7 @@ const generateAccessToken = (id, email) => {
 export const adminLogin = async (req, res, next) => {
   try {
     if (!req.body.email || !req.body.password) {
-      res.status(400).send({ message: "Send all required fields...." });
+      res.status(400).send({ message: "Send all required fields........" });
     }
 
     const response = await Admin.findOne({ email: req.body.email });
